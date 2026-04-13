@@ -1,0 +1,53 @@
+[package]
+name = "nerf-studio"
+version = "0.1.0"
+edition = "2021"
+description = "Interactive NeRF studio for creating photorealistic 3D scenes from 2D photos"
+authors = ["EonHermes"]
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["macros"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "fs", "trace"] }
+tokio = { version = "1", features = ["full"] }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Database
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite"] }
+
+# Image processing
+image = "0.25"
+reqwest = { version = "0.11", features = ["json"] }
+
+# ML/NeRF (placeholder - would use candle/tch-rs in production)
+candle-core = { version = "0.3", optional = true }
+candle-nn = { version = "0.3", optional = true }
+candle-transformers = { version = "0.3", optional = true }
+
+# Utilities
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+anyhow = "1.0"
+thiserror = "1.0"
+rayon = "1.8"
+
+# 3D math
+nalgebra = "0.32"
+
+[dev-dependencies]
+axum-test = "14.0"
+tempfile = "3.0"
+
+[features]
+default = []
+ml = ["candle-core", "candle-nn", "candle-transformers"]
+
+[[bin]]
+name = "nerf-server"
+path = "src/main.rs"
